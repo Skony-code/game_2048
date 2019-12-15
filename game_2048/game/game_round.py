@@ -16,7 +16,7 @@ def addrandomTile(arr):
     ar = deepcopy(arr)
     x = sum(row.count(0) for row in ar)
     y = randint(0, x-1)
-    z = 0;
+    z = -1;
     for i in range(len(ar)):
         for j in range(len(ar[0])):
             if ar[i][j] == 0:
@@ -85,6 +85,9 @@ def round():
         arr = deepcopy(arr2)
         ifend = end(arr)
         printtab(arr)
+        print("")
         while (arr2 == arr):
             arr2 = move(arr, arrowkey())
         arr = deepcopy(arr2)
+        printtab(arr)
+        print("")
