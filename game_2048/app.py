@@ -4,6 +4,6 @@ from game_2048.game import game_round
 
 
 def run():
-    win = GraphWin("2048", width, height)  # create a window
+    #win = GraphWin("2048", width, height)  # create a window
     game_round.round()
-    win.getMouse()
+    #win.getMouse()
