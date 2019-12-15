@@ -6,9 +6,16 @@ from game_2048.graphics.print_table import printtab
 def end(arr):
     ar = deepcopy(arr)
     for i in range(len(ar) - 1):
-        for j in range(len(ar[0]) - 1):
+        for j in range(len(ar) - 1):
             if (ar[i][j] == ar[i + 1][j] or ar[i][j] == ar[i][j + 1]):
                 return False
+    for i in range(len(ar)):
+        for j in range(len(ar)):
+            if (ar[i][j] == 0 or ar[i][j] == 0):
+                return False
+    for i in range(len(ar)-1):
+        if(ar[3][i]==ar[3][i+1] or ar[i][3]==ar[i+1][3]):
+            return False
     return True
 
 
@@ -77,15 +84,15 @@ def move(arr, direction=1):
 
 def round():
     arr = [[0] * 4 for i in range(4)]
-    ifend = False
     arr2 = addrandomTile(arr)
     arr = deepcopy(arr2)
-    while not ifend:
+    while True:
         arr2 = addrandomTile(arr)
         arr = deepcopy(arr2)
-        ifend = end(arr)
         printtab(arr)
         print("")
+        if end(arr):
+            break
         while (arr2 == arr):
             arr2 = move(arr, arrowkey())
         arr = deepcopy(arr2)
