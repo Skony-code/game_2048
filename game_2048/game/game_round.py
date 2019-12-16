@@ -2,6 +2,7 @@ from random import randint
 from copy import deepcopy
 from game_2048.game.game_controls import arrowkey
 from game_2048.graphics.print_table import printtab
+from game_2048.graphics.Tile import *
 
 def end(ar):
     for i in range(len(ar) - 1):
@@ -78,12 +79,15 @@ def move(ar, direction=1):
                         ar[j][i-1] *= 2
                         ar[j][i] = 0
 
-def round():
+def round(win,width,height):
     arr = [[0] * 4 for i in range(4)]
+    grid = Grid(width/2,height/2,400)
+    grid.draw(win)
     addrandomTile(arr)
     while True:
         addrandomTile(arr)
         arr2 = deepcopy(arr)
+        grid.updateGrid(arr)
         printtab(arr)
         print("")
         if end(arr):
