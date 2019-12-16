@@ -91,6 +91,9 @@ def round(win,width,height):
         printtab(arr)
         print("")
         if end(arr):
+            text = Text(Point(width/2, height/2), "GAME OVER")
+            text.setSize(30)
+            text.draw(win)
             break
         while arr2 == arr:
             move(arr, arrowkey())
