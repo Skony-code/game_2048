@@ -3,8 +3,7 @@ from copy import deepcopy
 from game_2048.game.game_controls import arrowkey
 from game_2048.graphics.print_table import printtab
 
-def end(arr):
-    ar = deepcopy(arr)
+def end(ar):
     for i in range(len(ar) - 1):
         for j in range(len(ar) - 1):
             if (ar[i][j] == ar[i + 1][j] or ar[i][j] == ar[i][j + 1]):
@@ -19,8 +18,7 @@ def end(arr):
     return True
 
 
-def addrandomTile(arr):
-    ar = deepcopy(arr)
+def addrandomTile(ar):
     x = sum(row.count(0) for row in ar)
     y = randint(0, x-1)
     z = -1;
@@ -37,8 +35,7 @@ def addrandomTile(arr):
                         return ar
 
 
-def move(arr, direction=1):
-    ar = deepcopy(arr)
+def move(ar, direction=1):
     if direction == 1:
         for h in range(3):
             for i in range(1, 4):
@@ -80,21 +77,16 @@ def move(arr, direction=1):
                     elif ar[j][i-1] == ar[j][i]:
                         ar[j][i-1] *= 2
                         ar[j][i] = 0
-    return ar
 
 def round():
     arr = [[0] * 4 for i in range(4)]
-    arr2 = addrandomTile(arr)
-    arr = deepcopy(arr2)
+    addrandomTile(arr)
     while True:
-        arr2 = addrandomTile(arr)
-        arr = deepcopy(arr2)
+        addrandomTile(arr)
+        arr2 = deepcopy(arr)
         printtab(arr)
         print("")
         if end(arr):
             break
-        while (arr2 == arr):
-            arr2 = move(arr, arrowkey())
-        arr = deepcopy(arr2)
-        printtab(arr)
-        print("")
+        while arr2 == arr:
+            move(arr, arrowkey())
