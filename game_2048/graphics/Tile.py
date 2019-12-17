@@ -62,12 +62,15 @@ class Grid:
         self.side = side
         self.x = x
         self.y = y
+        self.bigrect = Rectangle(Point(x+side/2+10,y+side/2+10),Point(x-side/2-10,y-side/2-10))
+        self.bigrect.setFill(color_rgb(150,150,150))
         self.tiles = [[] for i in range(4)]
         for i in range(4):
             for j in range(4):
-                self.tiles[i].append( Tile(x - 1.5 * side/4 + i * side/4, y - 1.5 * side/4 + j * side/4, 0, side / 4))
+                self.tiles[i].append( Tile(x - 1.5 * side/4 + i * side/4, y - 1.5 * side/4 + j * side/4, 0, side / 4 - 5))
 
     def draw(self, win):
+        self.bigrect.draw(win)
         for i in range(4):
             for j in range(4):
                 self.tiles[j][i].draw(win)
@@ -79,3 +82,5 @@ class Grid:
         for i in range(4):
             for j in range(4):
                 self.tiles[j][i].changeNumber(arr[i][j])
+    def animateGrid(self,ar,arr,key):
+        pass
