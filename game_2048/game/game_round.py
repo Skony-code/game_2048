@@ -3,6 +3,7 @@ from copy import deepcopy
 from game_2048.game.game_controls import arrowkey
 from game_2048.graphics.print_table import printtab
 from game_2048.graphics.Tile import *
+from game_2048.data import  data_loader
 
 
 def end(ar):
@@ -38,63 +39,55 @@ def addrandomTile(ar):
 
 
 def move(ar, direction,grid):
-    if direction == 1:
-        for h in range(3):
+    for h in range(3):
+        arr = [[False] * 4 for i in range(4)]
+        if direction == 1:
             for i in range(1, 4):
                 for j in range(4):
                     if ar[i - 1][j] == 0 and ar[i][j]!=0:
                         ar[i - 1][j] = ar[i][j]
                         ar[i][j] = 0
-                        grid.animateGridTile(i,j,1,direction,1)
-                        grid.updateGrid(ar)
+                        arr[i][j]=True
                     elif ar[i - 1][j] == ar[i][j] and ar[i][j]!=0:
                         ar[i - 1][j] *= 2
                         ar[i][j] = 0
-                        grid.animateGridTile(i, j, 1, direction, 1)
-                        grid.updateGrid(ar)
+                        arr[i][j] = True
 
-    elif direction == 2:
-        for h in range(3):
+        elif direction == 2:
             for i in range(2, -1, -1):
                 for j in range(4):
                     if ar[j][i + 1] == 0 and ar[j][i]!=0:
                         ar[j][i + 1] = ar[j][i]
                         ar[j][i] = 0
-                        grid.animateGridTile(j, i, 1, direction, 1)
-                        grid.updateGrid(ar)
+                        arr[i][j] = True
                     elif ar[j][i + 1] == ar[j][i] and ar[j][i]!=0:
                         ar[j][i + 1] *= 2
                         ar[j][i] = 0
-                        grid.animateGridTile(j, i, 1, direction, 1)
-                        grid.updateGrid(ar)
-    elif direction == 3:
-        for h in range(3):
+                        arr[i][j] = True
+        elif direction == 3:
             for i in range(2, -1, -1):
                 for j in range(4):
                     if ar[i + 1][j] == 0 and ar[i][j]!=0:
                         ar[i + 1][j] = ar[i][j]
                         ar[i][j] = 0
-                        grid.animateGridTile(i, j, 1, direction, 1)
-                        grid.updateGrid(ar)
+                        arr[i][j] = True
                     elif ar[i + 1][j] == ar[i][j] and ar[i][j]!=0:
                         ar[i + 1][j] *= 2
                         ar[i][j] = 0
-                        grid.animateGridTile(i, j, 1, direction, 1)
-                        grid.updateGrid(ar)
-    elif direction == 4:
-        for h in range(3):
+                        arr[i][j] = True
+        elif direction == 4:
             for i in range(1, 4):
                 for j in range(4):
                     if ar[j][i - 1] == 0 and ar[j][i]!=0:
                         ar[j][i - 1] = ar[j][i]
                         ar[j][i] = 0
-                        grid.animateGridTile(j, i, 1, direction, 1)
-                        grid.updateGrid(ar)
+                        arr[i][j] = True
                     elif ar[j][i - 1] == ar[j][i] and ar[j][i]!=0:
                         ar[j][i - 1] *= 2
                         ar[j][i] = 0
-                        grid.animateGridTile(j, i, 1, direction, 1)
-                        grid.updateGrid(ar)
+                        arr[i][j] = True
+        grid.animateGrid(arr, direction, data_loader.animsped)
+        grid.updateGrid(ar)
 
 
 def round(win, width, height):

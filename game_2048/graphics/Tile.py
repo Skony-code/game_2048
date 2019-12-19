@@ -56,11 +56,13 @@ class Tile:
         else:
             self.text.setText("")
         self.rect.setFill(color(number))
-    def move(self,x,y):
-        self.x+=x
-        self.y+=y
-        self.rect.move(x,y)
-        self.text.move(x,y)
+    def cloneText(self):
+        return self.text.clone()
+    def cloneRect(self):
+        return self.rect.clone()
+    def getNumber(self):
+        return self.number
+
     def moveanimation(self, tiles, dir, tim, win):
         tile = self.rect.clone()
         tiletext = self.text.clone()
@@ -69,22 +71,22 @@ class Tile:
         tile.draw(win)
         tiletext.draw(win)
         if dir==1:
-            for i in range(tiles * tim * 30):
+            for i in range(int(tiles * tim * 30)):
                 tile.move(0, -self.side / (tim * 30))
                 tiletext.move(0, -self.side / (tim * 30))
                 time.sleep(tim / 30)
         elif dir == 2:
-            for i in range(tiles * tim * 30):
+            for i in range(int(tiles * tim * 30)):
                 tile.move(self.side / (tim * 30), 0)
                 tiletext.move(self.side / (tim * 30), 0)
                 time.sleep(tim / 30)
         elif dir == 3:
-            for i in range(tiles * tim * 30):
+            for i in range(int(tiles * tim * 30)):
                 tile.move(0, self.side / (tim * 30))
                 tiletext.move(0, self.side / (tim * 30))
                 time.sleep(tim / 30)
         elif dir == 4:
-            for i in range(tiles * tim * 30):
+            for i in range(int(tiles * tim * 30)):
                 tile.move(-self.side / (tim * 30), 0)
                 tiletext.move(-self.side / (tim * 30), 0)
                 time.sleep(tim / 30)
@@ -122,17 +124,44 @@ class Grid:
         for i in range(4):
             for j in range(4):
                 self.tiles[j][i].changeNumber(arr[i][j])
+        update()
     def animateGridTile(self,i,j,tiles,dir,time):
         self.tiles[j][i].moveanimation(tiles,dir,time,self.win)
-    def animateGrid(self,ar,arr,key):#TODO ADD ANIMATIONS
-        for h in range(3):
+    def animateGrid(self,ar,dir,tim):#TODO ADD ANIMATIONS
+        art = [[] for i in range(4)]
+        arr = [[] for i in range(4)]
+        for i in range(4):
+            for j in range(4):
+                art[i].append(self.tiles[i][j].cloneText())
+                arr[i].append(self.tiles[i][j].cloneRect())
+                arr[i][j].draw(self.win)
+                art[i][j].draw(self.win)
+                self.tiles[i][j].changeNumber(0)
+        for h in range(int(tim * 30)):
+            up = False
             for i in range(4):
                 for j in range(4):
-                    if key==1:
-                        pass
-                    elif key == 2:
-                        pass
-                    elif key == 3:
-                        pass
-                    elif key == 4:
-                        pass
+                    if dir == 1 and ar[i][j]:
+                        arr[j][i].move(0, -(self.side/4 - 5) / (tim * 30))
+                        art[j][i].move(0, -(self.side/4 - 5) / (tim * 30))
+                        up = True
+                    elif dir == 2 and ar[i][j]:
+                        arr[i][j].move((self.side/4 - 5) / (tim * 30), 0)
+                        art[i][j].move((self.side/4 - 5) / (tim * 30), 0)
+                        up = True
+                    elif dir == 3 and ar[i][j]:
+                        arr[j][i].move(0, (self.side/4 - 5) / (tim * 30))
+                        art[j][i].move(0, (self.side/4 - 5) / (tim * 30))
+                        up = True
+                    elif dir == 4 and ar[i][j]:
+                        arr[i][j].move(-(self.side/4 - 5) / (tim * 30), 0)
+                        art[i][j].move(-(self.side/4 - 5) / (tim * 30), 0)
+                        up = True
+            if up:
+                update(30)
+        for i in range(4):
+            for j in range(4):
+                art[i][j].undraw()
+                arr[i][j].undraw()
+                #del arr[i][j]
+                #del art[i][j]
