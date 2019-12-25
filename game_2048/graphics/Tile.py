@@ -56,12 +56,12 @@ class Tile:
         else:
             self.text.setText("")
         self.rect.setFill(color(number))
-    def cloneText(self):
-        return self.text.clone()
-    def cloneRect(self):
-        return self.rect.clone()
-    def getNumber(self):
-        return self.number
+    def move(self,x,y):
+        self.rect.move(x,y)
+        self.text.move(x,y)
+    def undraw(self):
+        self.rect.undraw()
+        self.text.undraw()
 
     def moveanimation(self, tiles, dir, tim, win):
         tile = self.rect.clone()
@@ -129,39 +129,32 @@ class Grid:
         self.tiles[j][i].moveanimation(tiles,dir,time,self.win)
     def animateGrid(self,ar,dir,tim):#TODO ADD ANIMATIONS
         art = [[] for i in range(4)]
-        arr = [[] for i in range(4)]
         for i in range(4):
             for j in range(4):
-                art[i].append(self.tiles[i][j].cloneText())
-                arr[i].append(self.tiles[i][j].cloneRect())
-                arr[i][j].draw(self.win)
-                art[i][j].draw(self.win)
+                art[i].append(Tile(self.tiles[i][j].x,self.tiles[i][j].y,self.tiles[i][j].number,self.tiles[i][j].side))
+                if art[i][j].number!=0:
+                    art[i][j].draw(self.win)
                 self.tiles[i][j].changeNumber(0)
         for h in range(int(tim * 30)):
             up = False
             for i in range(4):
                 for j in range(4):
                     if dir == 1 and ar[i][j]:
-                        arr[j][i].move(0, -(self.side/4 - 5) / (tim * 30))
                         art[j][i].move(0, -(self.side/4 - 5) / (tim * 30))
                         up = True
                     elif dir == 2 and ar[i][j]:
-                        arr[i][j].move((self.side/4 - 5) / (tim * 30), 0)
                         art[i][j].move((self.side/4 - 5) / (tim * 30), 0)
                         up = True
                     elif dir == 3 and ar[i][j]:
-                        arr[j][i].move(0, (self.side/4 - 5) / (tim * 30))
                         art[j][i].move(0, (self.side/4 - 5) / (tim * 30))
                         up = True
                     elif dir == 4 and ar[i][j]:
-                        arr[i][j].move(-(self.side/4 - 5) / (tim * 30), 0)
                         art[i][j].move(-(self.side/4 - 5) / (tim * 30), 0)
                         up = True
             if up:
                 update(30)
         for i in range(4):
             for j in range(4):
+                pass
                 art[i][j].undraw()
-                arr[i][j].undraw()
-                #del arr[i][j]
                 #del art[i][j]
