@@ -2,7 +2,7 @@ from random import randint
 from copy import deepcopy
 from game_2048.game.game_controls import arrowkey
 from game_2048.graphics.print_table import printtab
-from game_2048.graphics.Tile import *
+from game_2048.graphics.tiles import *
 from game_2048.data import  data_loader
 
 
@@ -40,7 +40,7 @@ def addrandomTile(ar):
 
 def move(ar, direction,grid):
     for h in range(3):
-        arr = [[False] * 4 for i in range(4)]
+        arr = [[False] * 4 for i in range(4)]#creates bool list for moving tiles
         if direction == 1:
             for i in range(1, 4):
                 for j in range(4):
@@ -52,6 +52,7 @@ def move(ar, direction,grid):
                         ar[i - 1][j] *= 2
                         ar[i][j] = 0
                         arr[i][j] = True
+                        grid.tiles[j][i-1].doubleanimation(data_loader.doubletime)
 
         elif direction == 2:
             for i in range(2, -1, -1):
@@ -64,6 +65,7 @@ def move(ar, direction,grid):
                         ar[j][i + 1] *= 2
                         ar[j][i] = 0
                         arr[i][j] = True
+                        grid.tiles[i+1][j].doubleanimation(data_loader.doubletime)
         elif direction == 3:
             for i in range(2, -1, -1):
                 for j in range(4):
@@ -75,6 +77,7 @@ def move(ar, direction,grid):
                         ar[i + 1][j] *= 2
                         ar[i][j] = 0
                         arr[i][j] = True
+                        grid.tiles[i+1][j].doubleanimation(data_loader.doubletime)
         elif direction == 4:
             for i in range(1, 4):
                 for j in range(4):
@@ -86,7 +89,8 @@ def move(ar, direction,grid):
                         ar[j][i - 1] *= 2
                         ar[j][i] = 0
                         arr[i][j] = True
-        grid.animateGrid(arr, direction, data_loader.animsped)
+                        grid.tiles[j][i-1].doubleanimation(data_loader.doubletime)
+        grid.animateGrid(arr, direction, data_loader.slidetime)
         grid.updateGrid(ar)
 
 

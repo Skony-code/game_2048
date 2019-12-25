@@ -34,20 +34,22 @@ def color(number):
 
 
 class Tile:
-    def __init__(self, x, y, number, side):
+    def __init__(self, x, y, number, side,win):
         self.x = x
         self.y = y
         self.number = number
         self.side = side
+        self.win = win
         self.rect = Rectangle(Point(x - side / 2, y - side / 2), Point(x + side / 2, y + side / 2))
         self.text = Text(Point(x, y), str(number))
+        self.text.setSize(int(side/5))
         self.rect.setFill(color(number))
 
-    def draw(self, win):
-        self.rect.draw(win)
+    def draw(self):
+        self.rect.draw(self.win)
         if self.number == 0:
             self.text.setText("")
-        self.text.draw(win)
+        self.text.draw(self.win)
 
     def changeNumber(self, number):
         self.number = number
@@ -62,6 +64,19 @@ class Tile:
     def undraw(self):
         self.rect.undraw()
         self.text.undraw()
+    def doubleanimation(self,tim):
+        ar=[]
+        for i in range(int(tim/2 * 30)):
+            ar.append(Tile(self.x,self.y,self.number,self.side+i/tim*2,self.win))
+            ar[i].draw()
+            update(30)
+        for i in range(int(tim/2 * 30)-1,-1,-1):
+            ar[i].undraw()
+            update(30)
+        del ar
+
+
+
 
     def moveanimation(self, tiles, dir, tim, win):
         tile = self.rect.clone()
@@ -109,13 +124,13 @@ class Grid:
         self.tiles = [[] for i in range(4)]
         for i in range(4):
             for j in range(4):
-                self.tiles[i].append( Tile(x - 1.5 * side/4 + i * side/4, y - 1.5 * side/4 + j * side/4, 0, side / 4 - 5))
+                self.tiles[i].append( Tile(x - 1.5 * side/4 + i * side/4, y - 1.5 * side/4 + j * side/4, 0, side / 4 - 5,self.win))
 
     def draw(self):
         self.bigrect.draw(self.win)
         for i in range(4):
             for j in range(4):
-                self.tiles[j][i].draw(self.win)
+                self.tiles[j][i].draw()
 
     def updateTile(self, i, j, number):
         self.tiles[i][j].changeNumber(number)
@@ -131,9 +146,9 @@ class Grid:
         art = [[] for i in range(4)]
         for i in range(4):
             for j in range(4):
-                art[i].append(Tile(self.tiles[i][j].x,self.tiles[i][j].y,self.tiles[i][j].number,self.tiles[i][j].side))
+                art[i].append(Tile(self.tiles[i][j].x,self.tiles[i][j].y,self.tiles[i][j].number,self.tiles[i][j].side,self.win))
                 if art[i][j].number!=0:
-                    art[i][j].draw(self.win)
+                    art[i][j].draw()
                 self.tiles[i][j].changeNumber(0)
         for h in range(int(tim * 30)):
             up = False
