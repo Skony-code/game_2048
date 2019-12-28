@@ -77,7 +77,7 @@ def move(ar, direction,grid):
                         ar[i + 1][j] *= 2
                         ar[i][j] = 0
                         arr[i][j] = True
-                        grid.tiles[i+1][j].doubleanimation(data_loader.doubletime)
+                        grid.tiles[j][i+1].doubleanimation(data_loader.doubletime)
         elif direction == 4:
             for i in range(1, 4):
                 for j in range(4):
