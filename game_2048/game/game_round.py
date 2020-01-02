@@ -21,7 +21,7 @@ def end(ar):
     return True
 
 
-def addrandomTile(ar):
+def addrandomTile(ar,grid):
     x = sum(row.count(0) for row in ar)
     y = randint(0, x - 1)
     z = -1
@@ -32,10 +32,11 @@ def addrandomTile(ar):
                 if z == y:
                     if randint(0, 2) != 1:
                         ar[i][j] = 2
-                        return ar
+                        grid.animateSpawn(i,j,data_loader.spwntime,2)
                     else:
                         ar[i][j] = 4
-                        return ar
+                        grid.animateSpawn(i, j, data_loader.spwntime, 4)
+    grid.updateGrid(ar)
 
 
 def move(ar, direction,grid):
@@ -107,7 +108,7 @@ def move(ar, direction,grid):
                         arrr[i-1][j] = True
                         ifdoub[j][i - 1] = True
                         ifdoub[j][i] = False
-        grid.animateGridSlide(ar,arr,arrr, direction, data_loader.slidetime)
+        grid.animateGrid(ar, arr, arrr, direction, data_loader.slidetime)
         grid.updateGrid(ar)
 
 
@@ -115,11 +116,10 @@ def round(win, width, height):
     arr = [[0] * 4 for i in range(4)]
     grid = Grid(width / 2, height / 2, 400,win)
     grid.draw()
-    addrandomTile(arr)
+    addrandomTile(arr,grid)
     while True:
-        addrandomTile(arr)
+        addrandomTile(arr,grid) #TODO SPAWN ANIMATION
         arr2 = deepcopy(arr)
-        grid.updateGrid(arr)
         printtab(arr)
         print("")
         if end(arr):

@@ -145,7 +145,7 @@ class Grid:
     def animateGridTile(self, i, j, tiles, dir, time):
         self.tiles[j][i].moveanimation(tiles, dir, time, self.win)
 
-    def animateGridSlide(self,arh, ar,arb, dir, tim):  # TODO ADD ANIMATIONS
+    def animateGrid(self, arh, ar, arb, dir, tim):
         art = [[] for i in range(4)]
         artt = [[] for i in range(4)]
         for i in range(4):
@@ -163,7 +163,7 @@ class Grid:
             up = False
             for i in range(4):
                 for j in range(4):
-                    if dir == 1 and ar[i][j]:
+                    if dir == 1 and ar[i][j]:#sliding animation
                         art[j][i].move(0, -(self.side / 4 - 5) / (tim * 30))
                         up = True
                     elif dir == 2 and ar[i][j]:
@@ -175,7 +175,7 @@ class Grid:
                     elif dir == 4 and ar[i][j]:
                         art[i][j].move(-(self.side / 4 - 5) / (tim * 30), 0)
                         up = True
-                    if arb[i][j] and h<(tim/2 * 30):
+                    if arb[i][j] and h<(tim/2 * 30):#doubling animation
                         artt[i][j].append(Tile(self.tiles[i][j].x, self.tiles[i][j].y, arh[j][i], self.tiles[i][j].side + h / tim * 2, self.tiles[i][j].win))
                         artt[i][j][h].draw()
                         up = True
@@ -212,3 +212,12 @@ class Grid:
                         up = True
             if up: update(30)
         del artt
+    def animateSpawn(self,j,i,tim,number):
+        ar = []
+        for h in range(int(tim*30)):
+            ar.append(Tile(self.tiles[i][j].x, self.tiles[i][j].y,number,40+h/(int(tim*30))*(self.tiles[i][j].side-40), self.tiles[i][j].win))
+            ar[h].draw()
+            update(30)
+        for h in range(int(tim*30)):
+            ar[h].undraw()
+        del ar
