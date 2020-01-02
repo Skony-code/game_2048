@@ -111,21 +111,34 @@ def move(ar, direction,grid):
         grid.animateGrid(ar, arr, arrr, direction, data_loader.slidetime,data_loader.doubletime)
         grid.updateGrid(ar)
 
+def score(ar):
+    x=ar[0][0]
+    for i in range(4):
+        for j in range(4):
+            if ar[i][j]>x: x=ar[i][j]
+    return x
 
 def round(win, width, height):
     arr = [[0] * 4 for i in range(4)]
+    scor = Text(Point(width/2+data_loader.gridside/2+120,40),'Score: ')
+    scor.setSize(int(height/30))
+    scor.draw(win)
     grid = Grid(width / 2, height / 2, data_loader.gridside,win)
     grid.draw()
     addrandomTile(arr,grid)
     while True:
-        addrandomTile(arr,grid) #TODO SPAWN ANIMATION
+        addrandomTile(arr,grid)
         arr2 = deepcopy(arr)
         printtab(arr)
-        print("")
+        scor.setText('Score: '+str(score(arr)))
+        update()
+        print(score(arr))
         if end(arr):
             text = Text(Point(width / 2, height / 2), "GAME OVER")
-            text.setSize(30)
+            text.setSize(36)
             text.draw(win)
+            update()
+            input()
             break
         while arr2 == arr:
             move(arr, arrowkey(),grid)
