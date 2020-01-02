@@ -127,20 +127,22 @@ class Grid:
                     elif dir == 4 and ar[i][j]:
                         art[i][j].move(-(self.side / 4 - 5) / (tim * 30), 0)
                         up = True
-                    if arb[i][j] and h<=(timm/2 * 30):#doubling animation
+                    if arb[i][j] and h<=(timm/2 * 30) and timm!=0:#doubling animation
                         artt[i][j].append(Tile(self.tiles[i][j].x, self.tiles[i][j].y, arh[j][i], self.tiles[i][j].side + h / timm * 2, self.tiles[i][j].win))
                         artt[i][j][h].draw()
                         up = True
-                    elif arb[i][j] and h<(timm*30):
-                        artt[i][j][int(timm * 30)-h+1].undraw()
+                    elif arb[i][j] and h<(timm*30) and timm!=0:
+                        if timm==tim and (timm/2 * 30)%2==1: b=1
+                        else: b=0
+                        artt[i][j][int(timm * 30)-h+b].undraw()
                         up = True
             if up:
                 update(30)
         for i in range(4):
             for j in range(4):
                 art[i][j].undraw()
-                if arb[i][j] and artt[i][j][1]!=None: artt[i][j][1].undraw()
-                if arb[i][j] and artt[i][j][0] != None: artt[i][j][0].undraw()
+                if arb[i][j] and timm>0: artt[i][j][1].undraw()
+                if arb[i][j] and timm>0: artt[i][j][0].undraw()
         del art
         del artt
     def animateSpawn(self,j,i,tim,number):
