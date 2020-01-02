@@ -39,59 +39,77 @@ def addrandomTile(ar):
 
 
 def move(ar, direction,grid):
+    ifdoub= [[False] * 4 for i in range(4)]
     for h in range(3):
         arr = [[False] * 4 for i in range(4)]#creates bool list for moving tiles
+        arrr = [[False] * 4 for i in range(4)]  # creates bool list for doubling tiles
         if direction == 1:
             for i in range(1, 4):
                 for j in range(4):
                     if ar[i - 1][j] == 0 and ar[i][j]!=0:
                         ar[i - 1][j] = ar[i][j]
                         ar[i][j] = 0
+                        ifdoub[i-1][j] = ifdoub[i][j]
+                        ifdoub[i][j] = False
                         arr[i][j]=True
-                    elif ar[i - 1][j] == ar[i][j] and ar[i][j]!=0:
+                    elif ar[i - 1][j] == ar[i][j] and ar[i][j]!=0 and not ifdoub[i-1][j] and not ifdoub[i][j]:
                         ar[i - 1][j] *= 2
                         ar[i][j] = 0
                         arr[i][j] = True
-                        grid.tiles[j][i-1].doubleanimation(data_loader.doubletime)
-
+                        arrr[j][i-1] = True
+                        ifdoub[i - 1][j] = True
+                        ifdoub[i][j] = False
         elif direction == 2:
             for i in range(2, -1, -1):
                 for j in range(4):
                     if ar[j][i + 1] == 0 and ar[j][i]!=0:
                         ar[j][i + 1] = ar[j][i]
                         ar[j][i] = 0
+                        ifdoub[j][i + 1] = ifdoub[j][i]
+                        ifdoub[j][i] = False
                         arr[i][j] = True
-                    elif ar[j][i + 1] == ar[j][i] and ar[j][i]!=0:
+                    elif ar[j][i + 1] == ar[j][i] and ar[j][i]!=0 and not ifdoub[j][i+1] and not ifdoub[j][i]:
                         ar[j][i + 1] *= 2
                         ar[j][i] = 0
                         arr[i][j] = True
-                        grid.tiles[i+1][j].doubleanimation(data_loader.doubletime)
+                        arrr[i+1][j] = True
+                        ifdoub[j][i + 1] = True
+                        ifdoub[j][i] = False
         elif direction == 3:
             for i in range(2, -1, -1):
                 for j in range(4):
                     if ar[i + 1][j] == 0 and ar[i][j]!=0:
                         ar[i + 1][j] = ar[i][j]
                         ar[i][j] = 0
+                        ifdoub[i + 1][j] = ifdoub[i][j]
+                        ifdoub[i][j] = False
                         arr[i][j] = True
-                    elif ar[i + 1][j] == ar[i][j] and ar[i][j]!=0:
+                    elif ar[i + 1][j] == ar[i][j] and ar[i][j]!=0 and not ifdoub[i+1][j] and not ifdoub[i][j]:
                         ar[i + 1][j] *= 2
                         ar[i][j] = 0
                         arr[i][j] = True
-                        grid.tiles[j][i+1].doubleanimation(data_loader.doubletime)
+                        arrr[j][i+1] = True
+                        ifdoub[i + 1][j] = True
+                        ifdoub[i][j] = False
         elif direction == 4:
             for i in range(1, 4):
                 for j in range(4):
                     if ar[j][i - 1] == 0 and ar[j][i]!=0:
                         ar[j][i - 1] = ar[j][i]
                         ar[j][i] = 0
+                        ifdoub[j][i - 1] = ifdoub[j][i]
+                        ifdoub[j][i] = False
                         arr[i][j] = True
-                    elif ar[j][i - 1] == ar[j][i] and ar[j][i]!=0:
+                    elif ar[j][i - 1] == ar[j][i] and ar[j][i]!=0 and not ifdoub[j][i-1] and not ifdoub[j][i]:
                         ar[j][i - 1] *= 2
                         ar[j][i] = 0
                         arr[i][j] = True
-                        grid.tiles[j][i-1].doubleanimation(data_loader.doubletime)
-        grid.animateGrid(arr, direction, data_loader.slidetime)
+                        arrr[i-1][j] = True
+                        ifdoub[j][i - 1] = True
+                        ifdoub[j][i] = False
+        grid.animateGridSlide(arr, direction, data_loader.slidetime)
         grid.updateGrid(ar)
+        grid.animateGridDouble(arrr, data_loader.doubletime)
 
 
 def round(win, width, height):
