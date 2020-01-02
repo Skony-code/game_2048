@@ -66,51 +66,6 @@ class Tile:
     def undraw(self):
         self.rect.undraw()
         self.text.undraw()
-
-    def doubleanimation(self, tim):
-        ar = []
-        for i in range(int(tim / 2 * 30)):
-            ar.append(Tile(self.x, self.y, self.number, self.side + i / tim * 2, self.win))
-            ar[i].draw()
-            update(30)
-        for i in range(int(tim / 2 * 30) - 1, -1, -1):
-            ar[i].undraw()
-            update(30)
-        del ar
-
-    def moveanimation(self, tiles, dir, tim, win):
-        tile = self.rect.clone()
-        tiletext = self.text.clone()
-        tiletext.setText(str(self.number))
-        self.changeNumber(0)
-        tile.draw(win)
-        tiletext.draw(win)
-        if dir == 1:
-            for i in range(int(tiles * tim * 30)):
-                tile.move(0, -self.side / (tim * 30))
-                tiletext.move(0, -self.side / (tim * 30))
-                time.sleep(tim / 30)
-        elif dir == 2:
-            for i in range(int(tiles * tim * 30)):
-                tile.move(self.side / (tim * 30), 0)
-                tiletext.move(self.side / (tim * 30), 0)
-                time.sleep(tim / 30)
-        elif dir == 3:
-            for i in range(int(tiles * tim * 30)):
-                tile.move(0, self.side / (tim * 30))
-                tiletext.move(0, self.side / (tim * 30))
-                time.sleep(tim / 30)
-        elif dir == 4:
-            for i in range(int(tiles * tim * 30)):
-                tile.move(-self.side / (tim * 30), 0)
-                tiletext.move(-self.side / (tim * 30), 0)
-                time.sleep(tim / 30)
-        tile.undraw()
-        tiletext.undraw()
-        del tile
-        del tiletext
-
-
 class Grid:
     def __init__(self, x, y, side, win):
         self.side = side
@@ -142,10 +97,7 @@ class Grid:
                 self.tiles[j][i].changeNumber(arr[i][j])
         update()
 
-    def animateGridTile(self, i, j, tiles, dir, time):
-        self.tiles[j][i].moveanimation(tiles, dir, time, self.win)
-
-    def animateGrid(self, arh, ar, arb, dir, tim):
+    def animateGrid(self, arh, ar, arb, dir, tim,timm):
         art = [[] for i in range(4)]
         artt = [[] for i in range(4)]
         for i in range(4):
@@ -175,42 +127,21 @@ class Grid:
                     elif dir == 4 and ar[i][j]:
                         art[i][j].move(-(self.side / 4 - 5) / (tim * 30), 0)
                         up = True
-                    if arb[i][j] and h<(tim/2 * 30):#doubling animation
-                        artt[i][j].append(Tile(self.tiles[i][j].x, self.tiles[i][j].y, arh[j][i], self.tiles[i][j].side + h / tim * 2, self.tiles[i][j].win))
+                    if arb[i][j] and h<=(timm/2 * 30):#doubling animation
+                        artt[i][j].append(Tile(self.tiles[i][j].x, self.tiles[i][j].y, arh[j][i], self.tiles[i][j].side + h / timm * 2, self.tiles[i][j].win))
                         artt[i][j][h].draw()
                         up = True
-                    elif arb[i][j]:
-                        artt[i][j][int(tim * 30)-h].undraw()
+                    elif arb[i][j] and h<(timm*30):
+                        artt[i][j][int(timm * 30)-h+1].undraw()
                         up = True
             if up:
                 update(30)
         for i in range(4):
             for j in range(4):
                 art[i][j].undraw()
-                if arb[i][j]: artt[i][j][0].undraw()
+                if arb[i][j] and artt[i][j][1]!=None: artt[i][j][1].undraw()
+                if arb[i][j] and artt[i][j][0] != None: artt[i][j][0].undraw()
         del art
-        del artt
-    def animateGridDouble(self, arb, tim):
-        artt = [[] for i in range(4)]
-        up = False
-        for i in range(4):
-            for j in range(4):
-                artt[i].append([])
-        for h in range(int(tim / 2 * 30)):
-            for i in range(4):
-                for j in range(4):
-                    if arb[i][j]:
-                        artt[i][j].append(Tile(self.tiles[i][j].x, self.tiles[i][j].y, self.tiles[i][j].number, self.tiles[i][j].side + h / tim * 2, self.tiles[i][j].win))
-                        artt[i][j][h].draw()
-                        up=True
-            if up: update(30)
-        for h in range(int(tim / 2 * 30) - 1, -1, -1):
-            for i in range(4):
-                for j in range(4):
-                    if arb[i][j]:
-                        artt[i][j][h].undraw()
-                        up = True
-            if up: update(30)
         del artt
     def animateSpawn(self,j,i,tim,number):
         ar = []

@@ -108,13 +108,13 @@ def move(ar, direction,grid):
                         arrr[i-1][j] = True
                         ifdoub[j][i - 1] = True
                         ifdoub[j][i] = False
-        grid.animateGrid(ar, arr, arrr, direction, data_loader.slidetime)
+        grid.animateGrid(ar, arr, arrr, direction, data_loader.slidetime,data_loader.doubletime)
         grid.updateGrid(ar)
 
 
 def round(win, width, height):
     arr = [[0] * 4 for i in range(4)]
-    grid = Grid(width / 2, height / 2, 400,win)
+    grid = Grid(width / 2, height / 2, data_loader.gridside,win)
     grid.draw()
     addrandomTile(arr,grid)
     while True:
