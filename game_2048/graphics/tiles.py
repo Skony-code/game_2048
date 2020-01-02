@@ -145,8 +145,12 @@ class Grid:
     def animateGridTile(self, i, j, tiles, dir, time):
         self.tiles[j][i].moveanimation(tiles, dir, time, self.win)
 
-    def animateGridSlide(self, ar, dir, tim):  # TODO ADD ANIMATIONS
+    def animateGridSlide(self,arh, ar,arb, dir, tim):  # TODO ADD ANIMATIONS
         art = [[] for i in range(4)]
+        artt = [[] for i in range(4)]
+        for i in range(4):
+            for j in range(4):
+                artt[i].append([])
         for i in range(4):
             for j in range(4):
                 art[i].append(
@@ -171,32 +175,40 @@ class Grid:
                     elif dir == 4 and ar[i][j]:
                         art[i][j].move(-(self.side / 4 - 5) / (tim * 30), 0)
                         up = True
+                    if arb[i][j] and h<(tim/2 * 30):
+                        artt[i][j].append(Tile(self.tiles[i][j].x, self.tiles[i][j].y, arh[j][i], self.tiles[i][j].side + h / tim * 2, self.tiles[i][j].win))
+                        artt[i][j][h].draw()
+                        up = True
+                    elif arb[i][j]:
+                        artt[i][j][int(tim * 30)-h].undraw()
+                        up = True
             if up:
                 update(30)
         for i in range(4):
             for j in range(4):
-                pass
                 art[i][j].undraw()
+                if arb[i][j]: artt[i][j][0].undraw()
         del art
-    def animateGridDouble(self,ar,tim):
-        art = [[] for i in range(4)]
+        del artt
+    def animateGridDouble(self, arb, tim):
+        artt = [[] for i in range(4)]
         up = False
         for i in range(4):
             for j in range(4):
-                art[i].append([])
+                artt[i].append([])
         for h in range(int(tim / 2 * 30)):
             for i in range(4):
                 for j in range(4):
-                    if ar[i][j]:
-                        art[i][j].append(Tile(self.tiles[i][j].x, self.tiles[i][j].y, self.tiles[i][j].number, self.tiles[i][j].side + h / tim * 2, self.tiles[i][j].win))
-                        art[i][j][h].draw()
+                    if arb[i][j]:
+                        artt[i][j].append(Tile(self.tiles[i][j].x, self.tiles[i][j].y, self.tiles[i][j].number, self.tiles[i][j].side + h / tim * 2, self.tiles[i][j].win))
+                        artt[i][j][h].draw()
                         up=True
             if up: update(30)
         for h in range(int(tim / 2 * 30) - 1, -1, -1):
             for i in range(4):
                 for j in range(4):
-                    if ar[i][j]:
-                        art[i][j][h].undraw()
+                    if arb[i][j]:
+                        artt[i][j][h].undraw()
                         up = True
             if up: update(30)
-        del art
+        del artt

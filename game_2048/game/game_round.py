@@ -107,9 +107,8 @@ def move(ar, direction,grid):
                         arrr[i-1][j] = True
                         ifdoub[j][i - 1] = True
                         ifdoub[j][i] = False
-        grid.animateGridSlide(arr, direction, data_loader.slidetime)
+        grid.animateGridSlide(ar,arr,arrr, direction, data_loader.slidetime)
         grid.updateGrid(ar)
-        grid.animateGridDouble(arrr, data_loader.doubletime)
 
 
 def round(win, width, height):
