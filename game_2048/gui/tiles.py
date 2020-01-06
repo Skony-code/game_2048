@@ -1,6 +1,5 @@
 from game_2048.lib.graphics import Rectangle, Text, Point, color_rgb, update
 
-
 def color(number):
     # color() function returns color for a given number
     # this is used in assigning each Tile a color according to its number
@@ -33,6 +32,19 @@ def color(number):
     else:
         return color_rgb(200, 200, 200)
 
+class Score:
+    # represents score display
+    def __init__(self, x, y, win, size):
+        # x,y are coordinates of the center of a Score text
+        # size must be an integer value between 7 and 36
+        # win is Graphic Window in which the Score is displayed
+        self.text = Text(Point(x,y), 'Score: ')
+        self.text.setSize(size)
+        self.text.draw(win)
+    def change(self,number):
+        # changes displayed text to a given number
+        self.text.setText('Score: '+str(number))
+        update()
 
 class Tile:
     # represents single Tile
@@ -80,7 +92,7 @@ class Tile:
 
 
 class Grid:
-    # represents 2048 board
+    # represents 2048 board's graphics
     def __init__(self, x, y, side, win):
         # x,y are coordinates of the center of the board
         # side is the length of the side of the board
