@@ -1,9 +1,9 @@
 from random import randint
 from copy import deepcopy
 from game_2048.game.game_controls import arrowkey
-from game_2048.graphics.print_table import printtab
-from game_2048.graphics.tiles import *
-from game_2048.data import  data_loader
+from game_2048.gui.print_table import printtab
+from game_2048.gui.tiles import *
+from game_2048.data import  settings_loader
 
 
 def end(ar):
@@ -32,11 +32,11 @@ def addrandomTile(ar,grid):
                 if z == y:
                     if randint(0, 2) != 1:
                         ar[i][j] = 2
-                        grid.animateSpawn(i,j,data_loader.spwntime,2)
+                        grid.animate_spawn(i, j, settings_loader.spawning_time, 2)
                     else:
                         ar[i][j] = 4
-                        grid.animateSpawn(i, j, data_loader.spwntime, 4)
-    grid.updateGrid(ar)
+                        grid.animate_spawn(i, j, settings_loader.spawning_time, 4)
+    grid.update(ar)
 
 
 def move(ar, direction,grid):
@@ -108,8 +108,8 @@ def move(ar, direction,grid):
                         arrr[i-1][j] = True
                         ifdoub[j][i - 1] = True
                         ifdoub[j][i] = False
-        grid.animateGrid(ar, arr, arrr, direction, data_loader.slidetime,data_loader.doubletime)
-        grid.updateGrid(ar)
+        grid.animate(ar, arr, arrr, direction, settings_loader.sliding_time, settings_loader.doubling_time)
+        grid.update(ar)
 
 def score(ar):
     x=ar[0][0]
@@ -120,10 +120,10 @@ def score(ar):
 
 def round(win, width, height):
     arr = [[0] * 4 for i in range(4)]
-    scor = Text(Point(width/2+data_loader.gridside/2+120,40),'Score: ')
+    scor = Text(Point(width / 2 + settings_loader.grid_side / 2 + 120, 40), 'Score: ')
     scor.setSize(int(height/30))
     scor.draw(win)
-    grid = Grid(width / 2, height / 2, data_loader.gridside,win)
+    grid = Grid(width / 2, height / 2, settings_loader.grid_side, win)
     grid.draw()
     addrandomTile(arr,grid)
     while True:
