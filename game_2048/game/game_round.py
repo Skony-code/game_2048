@@ -141,4 +141,8 @@ def round(win, width, height):
             input()
             break
         while arr2 == arr:
-            move(arr, arrowkey(),grid)
+            if settings_loader.ai:
+                arrkey=1
+            else:
+                arrkey=arrowkey()
+            move(arr, arrkey,grid)
