@@ -39,7 +39,8 @@ class Board:
         text.setSize(36)
         text.draw(self.win)
         update()
-        input()
+        text.undraw()
+
     def add_random_tile(self):
         # adds random 2 or 4 to the board as well as starts spawn animation
         # counts how many 0 are in board and takes random number(x) from 0 to how many 0 there are in the board
@@ -154,6 +155,11 @@ class Board:
     def print(self):
         print('\n'.join(map(''.join, (str(x) for x in self.board))))
 
+    def restart(self):
+        self.board = [[0] * 4 for i in range(4)]
+        self.grid.update(self.board)
+
+
 
 def round(win):
     board = Board(win)#creates board
@@ -165,7 +171,7 @@ def round(win):
         if board.if_end():
             # displays game over if there is no move possible
             board.end()
-            break
+            board.restart()
         while arr2 == board.get():
             # checks for key until board arrangement has changed
             board.move(arrow_key())
