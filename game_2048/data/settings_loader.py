@@ -2,7 +2,7 @@ import configparser
 
 # loading the settings from settings.ini
 config = configparser.ConfigParser()
-config.read("data\\settings.ini")
+config.read("game_2048\\data\\settings.ini")
 window_width = config.getint('Window', 'width')
 window_height = config.getint('Window', 'height')
 sliding_time = config.getfloat('Animation', 'sliding time')
