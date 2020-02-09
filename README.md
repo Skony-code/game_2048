@@ -1,6 +1,6 @@
 # 2048 Game Clone
 ## Introduction
-The goal of this project is for me to learn Python programming language as well as learn the basics of Machine learning.
+The goal of this project is for me to learn Python programming language.
 ## Install
 Requiers pip Keyborad
 ## Run
